@@ -101,3 +101,14 @@ lint_off -rule UNOPTFLAT -file "*/rtl/ibex_id_stage.sv"
 // the expression assigned to it outside of the always_comb block.
 lint_off -rule UNOPTFLAT -file "*/rtl/ibex_controller.sv"
          -match "*assign id_in_ready_o = ~stall & ~halt_if & ~retain_id;"
+
+// rv-llm-fuzz: the same three UNOPTFLAT false alarms as above, in the form
+// reported by version 5.054, whose messages name different signals, so the
+// patterns above no longer match. Reasoning as above; matched on the reported
+// signal name.
+lint_off -rule UNOPTFLAT -file "*/rtl/ibex_controller.sv"
+         -match "*Circular combinational logic: '*controller_i.controller_run_o'*"
+lint_off -rule UNOPTFLAT -file "*/rtl/ibex_controller.sv"
+         -match "*Circular combinational logic: '*controller_i.stall'*"
+lint_off -rule UNOPTFLAT -file "*/rtl/ibex_id_stage.sv"
+         -match "*Circular combinational logic: '*id_stage_i.instr_id_done_o'*"

@@ -38,3 +38,11 @@ lint_off -rule WIDTH -file "*/rtl/ibex_simple_system.sv"
 public -module "ibex_simple_system" -var "RV32E"
 public -module "ibex_simple_system" -var "RV32M"
 public -module "ibex_simple_system" -var "RV32B"
+
+// rv-llm-fuzz: Verilator 5.054 warns that public signals prevent
+// optimization. These are constant parameters that the C++ testbench only
+// reads (ibex_simple_system.cc builds the Spike ISA string from them), so the
+// warning has no effect on simulation results.
+lint_off -rule UNOPTPUBLIC -file "*/rtl/ibex_simple_system.sv" -match "*Public signal 'RV32E'*"
+lint_off -rule UNOPTPUBLIC -file "*/rtl/ibex_simple_system.sv" -match "*Public signal 'RV32M'*"
+lint_off -rule UNOPTPUBLIC -file "*/rtl/ibex_simple_system.sv" -match "*Public signal 'RV32B'*"
